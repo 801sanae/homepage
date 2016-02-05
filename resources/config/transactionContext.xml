@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+				 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+				 http://www.springframework.org/schema/tx 
+				 http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+				 http://www.springframework.org/schema/context 
+				 http://www.springframework.org/schema/context/spring-context.xsd
+				 http://www.springframework.org/schema/aop 
+				 http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+				 http://www.springframework.org/schema/util 
+				 http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<!-- PropertyPlaceholderConfigurer 로 로드된 resource 는 ${ } 로 접근 가능 -->
+	<!-- <bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:properties/jdbc.properties" />
+	</bean>
+	 -->
+	 
+	 
+	<context:property-placeholder location="classpath:properties/jdbc.properties"/>
+	
+	  <!--
+	      <context:property-placeholder/>는 Spring 3.1에서는 PropertySourcePlaceholderConfigurer 로 초기화된다.
+	      이 때 location에 지정된 프라퍼티도 place-holder로 적용하게 된다.
+	      Spring 3.1.2에는 XML Property를 못 추가하는 버그가 있는데 이를 통해 우회 가능하다.
+	      단, 이렇게 location에 들어간 프라퍼티는 공식 Environment의 PropertySource로 추가되지는 않는다.
+	      따라서 org.springframework.core.env.Environment.getProperty()로는 읽을 수 없다.
+ 	 -->
+	
+
+	<!-- DBCP (Apache Commons Database Connection) 사용 -->
+	
+	
+ 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+	</bean> 
+	
+<!-- 	<util:properties id="jdbc" location="classpath:properties/jdbc.properties"/>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="#{jdbc['jdbc.driverClassName]'}" />
+		<property name="url" value="#{jdbc['jdbc.url']}" />
+		<property name="username" value="#{jdbc['jdbc.username']}" />
+		<property name="password" value="#{jdbc['jdbc.password']}" />
+		<property name="initialSize" value="#{jdbc['jdbc.initialSize']}" />
+		<property name="maxActive" value="#{jdbc['jdbc.maxActive']}" />
+	</bean> -->
+	
+	
+	
+
+	<!-- TransactioManager instance 생성 --> 
+	<!-- 애플리케이션 인프라  -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>

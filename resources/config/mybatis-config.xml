@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 기타 설정정보 :: [MyBatis_Home]/mybatis-3.2.1.pdf 참조 -->
+	<settings>
+		<setting name="callSettersOnNulls" value="false" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias alias="User" type="com.bit.homepage.domain.User" />
+		<typeAlias alias="GuestBook" type="com.bit.homepage.domain.GuestBook" />
+		<typeAlias alias="Board" type="com.bit.homepage.domain.Board" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mappers/usermapper.xml"/>
+		<mapper resource="mappers/guestbookmapper.xml"/>
+		<mapper resource="mappers/boardmapper.xml"/>
+	</mappers>
+
+</configuration>
+ 		
+ 		
+ 		
